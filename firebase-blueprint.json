@@ -1,0 +1,84 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Information about the user and their reading preferences.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "settings": {
+          "type": "object",
+          "properties": {
+            "fontSize": { "type": "number" },
+            "theme": { "type": "string", "enum": ["light", "dark", "sepia"] },
+            "sideBySide": { "type": "boolean" }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "email", "createdAt", "updatedAt"]
+    },
+    "BookMetadata": {
+      "title": "Book Metadata",
+      "description": "Metadata for an EPUB book uploaded by the user.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "cover": { "type": "string" },
+        "originalLanguage": { "type": "string" },
+        "addedAt": { "type": "number" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["id", "ownerId", "title", "addedAt"]
+    },
+    "BookChunk": {
+      "title": "Book Content Chunk",
+      "description": "A part of the EPUB file data, chunked to fit Firestore limits.",
+      "type": "object",
+      "properties": {
+        "bookId": { "type": "string" },
+        "chunkIndex": { "type": "number" },
+        "data": { "type": "string" }
+      },
+      "required": ["bookId", "chunkIndex", "data"]
+    },
+    "Translation": {
+      "title": "Translation Cache",
+      "description": "A cached translation for a specific chapter/section.",
+      "type": "object",
+      "properties": {
+        "bookId": { "type": "string" },
+        "chapterId": { "type": "string" },
+        "originalText": { "type": "string" },
+        "translatedText": { "type": "string" },
+        "language": { "type": "string" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["bookId", "chapterId", "originalText", "translatedText", "language"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and settings."
+    },
+    "/users/{userId}/books/{bookId}": {
+      "schema": "BookMetadata",
+      "description": "Metadata for the user's books."
+    },
+    "/users/{userId}/books/{bookId}/chunks/{chunkId}": {
+      "schema": "BookChunk",
+      "description": "Binary data chunks for the EPUB file."
+    },
+    "/users/{userId}/books/{bookId}/translations/{translationId}": {
+      "schema": "Translation",
+      "description": "Stored translations for the book."
+    }
+  }
+}

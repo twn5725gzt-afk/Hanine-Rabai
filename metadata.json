@@ -1,0 +1,6 @@
+{
+  "name": "Texta",
+  "description": "A minimal, AI-enhanced EPUB reader with pastel aesthetics, translations, and organized collections.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": []
+}
